@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Импорт данных в базу данных</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body.light-theme {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        body.dark-theme {
+            font-family: Arial, sans-serif;
+            background-color: #343a40;
+            color: #fff;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            color: inherit;
+        }
+
+        .btn {
+            cursor: pointer;
+        }
+
+        /* Добавим стили для отображения прогресса загрузки */
+        .progress {
+            margin-top: 20px;
+        }
+
+        .progress-bar {
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body class="light-theme">
+<div class="container mt-5">
+    <h1 class="mb-3">Импорт данных в базу данных</h1>
+
+    <!-- Форма для загрузки файла -->
+    <form id="importForm" enctype="multipart/form-data">
+        <div class="form-group">
+            <input type="file" id="dataFile" name="dataFile" accept=".xlsx, .xls" class="form-control-file">
+        </div>
+        <button type="submit" class="btn btn-primary">Импортировать данные</button>
+    </form>
+
+    <!-- Прогресс загрузки -->
+    <div class="progress mt-3" style="display: none;">
+        <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#importForm').submit(function(event) {
+            event.preventDefault();
+            var formData = new FormData($(this)[0]);
+
+            // Отображаем прогресс загрузки
+            $('.progress').show();
+
+            $.ajax({
+                url: '/importData', // Путь к обработчику запроса на сервере
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                xhr: function() {
+                    var xhr = new window.XMLHttpRequest();
+                    xhr.upload.addEventListener("progress", function(evt) {
+                        if (evt.lengthComputable) {
+                            var percentComplete = (evt.loaded / evt.total) * 100;
+                            $('#progressBar').css('width', percentComplete + '%');
+                        }
+                    }, false);
+                    return xhr;
+                },
+                success: function(response) {
+                    // Обработка успешного импорта данных
+                    alert('Данные успешно импортированы в базу данных.');
+                },
+                error: function(xhr, status, error) {
+                    // Обработка ошибок при импорте данных
+                    alert('Произошла ошибка при импорте данных: ' + error);
+                }
+            });
+
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

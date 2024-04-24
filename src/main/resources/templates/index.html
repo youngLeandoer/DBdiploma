@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная страница</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body.light-theme {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        body.dark-theme {
+            font-family: Arial, sans-serif;
+            background-color: #343a40;
+            color: #fff;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            color: inherit;
+        }
+
+        .btn {
+            cursor: pointer;
+        }
+
+        .styled-table {
+            border-collapse: collapse;
+            width: 100%;
+            border: 1px solid #dee2e6;
+        }
+
+        .styled-table th, .styled-table td {
+            border: 1px solid #dee2e6;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .styled-table th {
+            background-color: #f2f2f2;
+        }
+
+        .add-row-btn, .add-col-btn, .delete-row-btn, .delete-col-btn {
+            margin-bottom: 10px;
+        }
+
+        .editable-cell {
+            cursor: pointer;
+        }
+
+        .editable-cell input {
+            width: 100%;
+            box-sizing: border-box;
+            border: none;
+            outline: none;
+        }
+
+        /* Стили для переключателя темы */
+        .theme-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .theme-switcher:hover {
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .theme-switcher-icon {
+            width: 24px;
+            height: 24px;
+            fill: #343a40;
+            transition: fill 0.3s ease;
+        }
+
+        .theme-switcher:hover .theme-switcher-icon {
+            fill: #c8102e;
+        }
+    </style>
+</head>
+<body class="light-theme">
+<div class="container mt-5">
+    <h1 class="mb-3">Главная страница</h1>
+
+    <h2 class="mb-3">Загрузка данных</h2>
+    <div class="form-group">
+        <input type="file" id="excelFile" accept=".xlsx, .xls" class="form-control-file">
+    </div>
+    <button id="loadDataBtn" class="btn btn-primary">Загрузить данные</button>
+
+    <h2 class="mt-5 mb-3">Отображение таблицы</h2>
+    <div id="tableContainer"></div>
+    <a href="/select_database" class="btn btn-primary">Выбрать базу данных</a>
+    <button id="saveDataBtn" class="btn btn-primary">Сохранить данные</button>
+</div>
+
+<!-- Переключатель темы -->
+<div class="theme-switcher" id="themeSwitcher">
+    <svg class="theme-switcher-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M0 0h24v24H0z" fill="none"/>
+        <path d="M12 18c-4.97 0-9-4.03-9-9s4.03-9 9-9 9 4.03 9 9-4.03 9-9 9zm0-16c-4.42 0-8 3.58-8 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8z"/>
+        <circle cx="12" cy="12" r="5"/>
+    </svg>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="scripts/scriptMain.js"></script>
+</body>
+</html>
