@@ -98,19 +98,30 @@ function updateTableData() {
     tableData = updatedTableData;
 }
 function saveTableData() {
-    const tableRows = document.querySelectorAll('#tableContainer tr');
-    const tableData = [];
+    // Собираем данные таблицы
+    const rows = document.querySelectorAll('#tableContainer tr');
+    const data = [];
 
-    tableRows.forEach(row => {
+    rows.forEach(row => {
         const rowData = [];
         row.querySelectorAll('td').forEach(cell => {
-            rowData.push(cell.textContent);
+            // Проверяем, что элемент не кнопка
+            if (!cell.querySelector('button')) {
+                rowData.push(cell.textContent);
+            }
         });
-        tableData.push(rowData);
+        data.push(rowData);
     });
 
-    localStorage.setItem('tableData', JSON.stringify(tableData));
+    // Создаем новый Excel-файл
+    var wb = XLSX.utils.book_new();
+    var ws = XLSX.utils.aoa_to_sheet(data);
+    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
 
+    // Сохраняем файл
+    XLSX.writeFile(wb, 'table_data.xlsx');
+
+    // Выводим сообщение об успешном сохранении
     const alert = document.createElement('div');
     alert.classList.add('alert', 'alert-success', 'mt-3');
     alert.textContent = 'Данные успешно сохранены!';
@@ -122,7 +133,6 @@ function saveTableData() {
 }
 document.getElementById('saveDataBtn').addEventListener('click', saveTableData);
 
-// Обработчик для изменения темы
 $('#themeSwitcher').on('click', function() {
     $('body').toggleClass('dark-theme');
     if ($('body').hasClass('dark-theme')) {

@@ -1,3 +1,5 @@
+
+
 function getDatabaseList() {
     fetch('/api/database/list')
         .then(response => response.json())
@@ -20,6 +22,7 @@ function connectToDatabase() {
         type: 'POST',
         success: function(response) {
             console.log('Connected to database:', selectedDatabase);
+            localStorage.setItem('selectedDatabase', selectedDatabase);
 
             $('#mappingButton').prop('disabled', false);
 
@@ -43,7 +46,17 @@ function connectToDatabase() {
         }
     });
 }
-
+$(document).ready(function() {
+    $('#selectDatabaseBtn').on('click', function() {
+        var selectedDatabase = $('#databaseSelect').val();
+        if (selectedDatabase) {
+            localStorage.setItem('selectedDatabase', selectedDatabase);
+            window.location.href = '/map_columns';
+        } else {
+            alert('Please select a database.');
+        }
+    });
+});
 function showImportedData() {
     var selectedDatabase = $('#selectedDatabase').val();
     $.ajax({
@@ -88,8 +101,6 @@ function showImportedData() {
     });
 }
 
-
-
 $('#themeSwitcher').on('click', function() {
     $('body').toggleClass('dark-theme');
     if ($('body').hasClass('dark-theme')) {
@@ -102,4 +113,3 @@ $('#themeSwitcher').on('click', function() {
 function goBack() {
     window.history.back();
 }
-
